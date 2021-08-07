@@ -1,0 +1,83 @@
+
+
+1)
+API : https://www.lafabriquedunet.fr/blog/definition-api/
+Flask ?
+microframework ?
+
+2) Se connecter à une API et recupérer des informations :
+Exemple ?
+Scrap : API web
+Collecte via API générale
+
+3) à quoi ça sert 
+API web exemple: Navigateur envoi requete api web et recoit des informations pour remplir la page du navigateur
+
+==> FLASK en python 
+
+
+Explications concrete
+4) Il va falloir : 
+1) Lancer un script python qui tourne en continue sur un serveur (celui de votre ordinateur)
+Le script ecoute les requetes qui lui sont adressées (via un port predefini et son adresse IP)
+2) Lorsque ce script python (API) reçoit une requete qui lui est destinée, celle ci doit être envoyée en respectant les regles definies dans le script.py
+3) Une fois la requete receptionnée, celle ci est analyser par le script et renvoi la réponse attendue (celle definie dans le script)
+==> Une page HTML
+==> Un fichier json
+==> ...
+
+Exemple: 
+1) Installer Flask
+2) Dans un nouveau repertoire, sauvegarder ce fichier, puis lancer le "python script1.py" sur un terminal ou un IDE ou un notebook situé dans ce repertoire
+3) Sur votre navigateur prefere, utiliez http://localhost:5000/ comme url, vous verrez apparaitre le retour de requete, celle adressée à votre API web, flask
+nb: Si vous avez un message d'errerur concernant le format du port, il faut l'imposer integer à la derniere ligne du script (port="5000" ==> port=5000)
+
+
+Projet:
+Realiser un web service qui demande à l'utilisateur un csv avec une colonne de commentaires produit et un colonne de note associée au produit et qui crée un modele d'analyse de sentiment sur des commentaires.
+==> Python
+==> NLP
+==> Flask
+==> HTML/jinjas
+2 possibilités: API web ou API classique (script to script)
+
+Partie 1: Nous considerons que le csv est disponible dans le repertoire Flask, l'utilisateur ne peut qu'ecrire une url dans son navigateur qui stimulera notre API pour réaliser le nettoyage du dataset et sauvegarder les éléments necessaires à sa réutilisation.
+
+0) Partez d'un modele d'analyse de sentiment dejà construit:
+Encapsuler vos transformations dans des fonctions
+Sauver les éléments nécessaires à l'utilisation des modeles
+#Save classifier
+pickle.dump(cls,open("cls.pkl","wb"))
+#Save vectorizer.vocabulary_ (où : vectorizer = TfidfVectorizer() et vectorizer.fit(Corpus['review_net'])
+pickle.dump(vectorizer, open("tfidf1.pkl", "wb"))
+
+1) Creer votre projet Flask dans un nouveau repertoire en respectant les règles de constitution des repertoires FLask
+==> Recherche notice
+
+2) Partez du script de base, et modifier la contenu de la fonction pour qu'elle pilote la réalisation d'un :
+- macro nettoyage dataset (Filtre, equilibre des données, duplicats, ...)
+- nettoyage fin des commentaires (nettoyage pour un featuring type TFIDF orienté classifier)
+- entrainement d'un classifier 
+- sauvegarde du classifier ainsi que du "vectorizer.vocabulary_" (je vous conseille la librairie pickle)
+==> Vous renverrez à l'utilisateur une chaine de caractere associée à la bonne réalisation de l'operation d'entrainement et de sauvegarde des modeles pour reutilisation
+
+
+Partie 2 : Construire une route permettant de renvoyer une prediction Positif/negatif
+1) Trouver un moyen de faire une prediction sur un TFIDF (son vocabulaire) et un classifier préalablement sauvegardé
+2) Encapsuler cette réponse dans une fonction
+3) Implementer une route /predict qui recupere en parametre une chaine de caractere et la renvoie à son utilisateur
+4) Implementer une route /predict qui renvoie une prediction polarité (positif/negatif) lorsqu'elle recupere en parametre une chaine de caractere
+
+
+Partie 3 : Construire une route qui upload un csv envoyé par un user et qui entraine un modele sur celui ci
+1) Créer une route qui permet à l'utilisateur de telecharger son csv
+2) Modifier la route du 1) pour qu'une operation d'entrainement s'enchaine après la recuperation du csv
+Renvoyer des metrics à l'utilisateur
+
+Partie 4: Renvoyer tout vos resultats sous format json
+
+Partie 4: Creer une interface utilisateur complete
+1) Realiser une prediction en choississant le modele à utiliser selon les metrics qui seront presentées à l'user
+2) Permettre un entrainement sur un csv envoyé par un utilisateur, enregistrer le modele et lui renvoyer les metrics
+
+
